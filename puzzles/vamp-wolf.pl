@@ -1,0 +1,3 @@
+/**
+  * Vampire-Werewolf problem definition
+  */
