@@ -23,6 +23,7 @@ valid(0,0).
 
 start([3,3,left]).
 goal([0,0,_]).
+heuristic(X, [V,W,_]) :- X is V+W.
 
 arc([V_start, W_start, left],[V_end, W_end, right]) :-
 	valid(V_end, W_end),
