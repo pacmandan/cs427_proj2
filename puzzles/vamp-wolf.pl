@@ -24,44 +24,45 @@ valid(0,0).
 start([3,3,left]).
 goal([0,0,_]).
 heuristic(X, [V,W,_]) :- X is V+W.
+heuristic_compare(H1, H2) :- H1 =< H2.
 
-arc([V_start, W_start, left],[V_end, W_end, right]) :-
+arc([V_start, W_start, left],[V_end, W_end, right], 1) :-
 	valid(V_end, W_end),
 	V_end is V_start - 1,
 	W_end is W_start.
-arc([V_start, W_start, left],[V_end, W_end, right]) :-
+arc([V_start, W_start, left],[V_end, W_end, right], 1) :-
 	valid(V_end, W_end),
 	V_end is V_start,
 	W_end is W_start - 1.
-arc([V_start, W_start, left],[V_end, W_end, right]) :-
+arc([V_start, W_start, left],[V_end, W_end, right], 1) :-
 	valid(V_end, W_end),
 	V_end is V_start - 2,
 	W_end is W_start.
-arc([V_start, W_start, left],[V_end, W_end, right]) :-
+arc([V_start, W_start, left],[V_end, W_end, right], 1) :-
 	valid(V_end, W_end),
 	V_end is V_start - 1,
 	W_end is W_start - 1.
-arc([V_start, W_start, left],[V_end, W_end, right]) :-
+arc([V_start, W_start, left],[V_end, W_end, right], 1) :-
 	valid(V_end, W_end),
 	V_end is V_start,
 	W_end is W_start - 2.
-arc([V_start, W_start, right],[V_end, W_end, left]) :-
+arc([V_start, W_start, right],[V_end, W_end, left], 1) :-
 	valid(V_end, W_end),
 	V_end is V_start + 2,
 	W_end is W_start.
-arc([V_start, W_start, right],[V_end, W_end, left]) :-
+arc([V_start, W_start, right],[V_end, W_end, left], 1) :-
 	valid(V_end, W_end),
 	V_end is V_start + 1,
 	W_end is W_start + 1.
-arc([V_start, W_start, right],[V_end, W_end, left]) :-
+arc([V_start, W_start, right],[V_end, W_end, left], 1) :-
 	valid(V_end, W_end),
 	V_end is V_start,
 	W_end is W_start + 2.
-arc([V_start, W_start, right],[V_end, W_end, left]) :-
+arc([V_start, W_start, right],[V_end, W_end, left], 1) :-
 	valid(V_end, W_end),
 	V_end is V_start + 1,
 	W_end is W_start.
-arc([V_start, W_start, right],[V_end, W_end, left]) :-
+arc([V_start, W_start, right],[V_end, W_end, left], 1) :-
 	valid(V_end, W_end),
 	V_end is V_start,
 	W_end is W_start + 1.

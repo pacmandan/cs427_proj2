@@ -39,11 +39,11 @@ search_step(Open, Closed, Goal) :-
 	(bagof(Move, moves(Next_record, Open, Closed, Move), MoveList);MoveList = []),
 	add_list_to_queue(MoveList, OpenTail, NewOpen),
 	add_to_set(Next_record, Closed, NewClosed),
-	search_step(NewOpen, NewClosed, Goal).
+	search_step(NewOpen, NewClosed, Goal),!.
 
 moves(State_record, Open, Closed, Next_record) :-
 	state_record(State, _, State_record),
-	arc(State, Next),
+	arc(State, Next, _),
 	state_record(Next, _, Test),
 	not(member(Test, Open)),
 	not(member(Test, Closed)),
