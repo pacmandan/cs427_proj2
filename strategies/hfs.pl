@@ -24,11 +24,13 @@ add_to_set(X, S, [X|S]).
 % Predicate used by the priority queue.
 % Determines state 1 is better than state 2 by comparing their heuristics.
 precedes(State_record1, State_record2) :-
-	state_record(State1, _, State_record1),
-	state_record(State2, _, State_record2),
+	state_record(State1, Parent1, State_record1),
+	state_record(State2, Parent2, State_record2),
 	heuristic(H1, State1),
 	heuristic(H2, State2),
-	heuristic_compare(H1, H2).
+	arc(State1, Parent1, Cost1),
+	arc(State2, Parent2, Cost2),
+	heuristic_compare(H1 + Cost1, H2 + Cost2).
 
 % State records. Used to keep track of where we've been
 % by keeping each state in a pair with its parent.

@@ -17,6 +17,14 @@ goal([w,w,w,b,blank,b,b]).
 goal([w,w,w,b,b,blank,b]).
 goal([w,w,w,b,b,b,blank]). 
 
+heuristic(3, []).
+heuristic(3, [b | _]).
+heuristic(X, [blank | T]) :- heuristic(X, T).
+heuristic(X, [w | T]) :-
+	heuristic(TailX, T),
+	X is TailX - 1.
+
+heuristic_compare(H1,H2) :- H1 =< H2.
 
 /* [blank, A, B, C, D, E, F] */
 
