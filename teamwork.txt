@@ -1,0 +1,5 @@
+Work breakdown:
+
+vamp-wolf.pl, bfs.pl, hfs.pl: Dan Green
+black-white.pl, dfs.pl: Katelyn Narum
+solver.pl: <Collaborative effort>

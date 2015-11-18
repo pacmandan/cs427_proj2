@@ -37,33 +37,38 @@ precedes(State_record1, State_record2) :-
 state_record(State, Parent, [State, Parent]).
 
 % Starts the search.
-begin(Start, Goal) :-
+begin(Start, Goal, Filename) :-
 	empty_sort_queue(EmptyOpen),
 	empty_set(Closed),
 	state_record(Start, nil, State),
 	insert_sort_queue(State, EmptyOpen, Open),
-	search_step(Open, Closed, Goal).
+	open(Filename, append, Stream),
+	search_step(Open, Closed, Goal, Stream),
+	write(Stream, '--------------'), nl(Stream),
+	close(Stream).
 
 % Search step. Has three predicates:
 % Nothing left in open - search has failed.
-search_step(Open, _, _) :- empty_sort_queue(Open), write('No solution found.').
+search_step(Open, _, _, Stream) :-
+	empty_sort_queue(Open),
+	write(Stream, 'No solution found.').
 % Goal state matches current state. Search has succeeded!
-search_step(Open, Closed, Goal) :-
+search_step(Open, Closed, Goal, Stream) :-
 	remove_sort_queue(Next_record, Open, _),
 	state_record(State, _, Next_record),
 	Goal = State,
-	write('States Visited:'), nl,
-	print_visited(Closed), nl,
-	write('Solution:'), nl,
-	print_solution(Next_record, Closed).
+	write(Stream, 'States Visited:'), nl(Stream),
+	print_visited(Closed, Stream), nl(Stream),
+	write(Stream, 'Solution:'), nl(Stream),
+	print_solution(Next_record, Closed, Stream).
 % Otherwise, open all states that can be moved to from this state, and put them
 % into the priority queue. Recurse.
-search_step(Open, Closed, Goal) :-
+search_step(Open, Closed, Goal, Stream) :-
 	remove_sort_queue(Next_record, Open, OpenTail),
 	(bagof(Move, moves(Next_record, Open, Closed, Move), MoveList);MoveList=[]),
 	insert_list_sort_queue(MoveList, OpenTail, NewOpen),
 	add_to_set(Next_record, Closed, NewClosed),
-	search_step(NewOpen, NewClosed, Goal), !.
+	search_step(NewOpen, NewClosed, Goal, Stream), !.
 
 % Unifies if Next_record can be obtained by moving to it from
 % State_record AND Next_record isn't in Open or Closed.
@@ -79,18 +84,18 @@ moves(State_record, Open, Closed, Next_record) :-
 % Prints out the solution to the screen.
 % May move these predicates to solver.pl, since all
 % search strategies might use this.
-print_solution(State_record, _) :-
+print_solution(State_record, _, Stream) :-
 	state_record(State, nil, State_record),
-	write(State), nl.
-print_solution(State_record, Closed) :-
+	write(Stream, State), nl(Stream).
+print_solution(State_record, Closed, Stream) :-
 	state_record(State, Parent, State_record),
 	state_record(Parent, _, Parent_record),
 	member(Parent_record, Closed),
-	print_solution(Parent_record, Closed),
-	write(State), nl.
+	print_solution(Parent_record, Closed, Stream),
+	write(Stream, State), nl(Stream).
 
-print_visited([]).
-print_visited([H|Closed]) :-
-	print_visited(Closed),
+print_visited([], _).
+print_visited([H|Closed], Stream) :-
+	print_visited(Closed, Stream),
 	state_record(State, _, H),
-	write(State), nl.
+	write(Stream, State), nl(Stream).

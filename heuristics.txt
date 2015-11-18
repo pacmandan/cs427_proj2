@@ -1,0 +1,47 @@
+Heuristics explanation
+**********************************
+
+Vampire/Werewolf puzzle heuristic
+
+Our states were modeled such that we only keep
+track of how many vampires and werewolves are
+on the starting side of the river. For example,
+since the puzzle starts with 3 vampires and
+3 werewolves on the starting side, that state is
+represented as [3,3].
+
+Since the goal state is to get everyone on the
+opposite side of the river (i.e. [0,0]), the heuristic
+for this puzzle is simply the total number of beings
+on the starting side of the river, with lower numbers
+being better.
+
+Example:
+	2 vampires and 1 werewolf on starting side
+	--> Heuristic = 2 + 1 = 3
+
+***********************************
+
+Black-white puzzle heuristic
+
+We chose a rather simple heuristic for this one.
+The heuristic is simply 3 minus the total number of whites
+on the left side (before hitting a black token). A lower
+heuristic value means more desirable state.
+
+For example:
+[w,blank,w,b,w,b,b] --> Heuristic = 3 - 2 = 1
+ *       * ^
+
+[b,w,blank,w,b,b,w] --> Heuristic = 3 - 0 = 3
+ ^
+
+************************************
+
+We also factored edge cost into the heuristics, but that's
+accomplished in the HFS solver directly, rather than in the puzzle.
+When HFS compares two heuristics, it compares the heuristic
+value of the new state + the edge cost to get to that state.
+
+Since lower is better, a low heuristic value with a low edge cost
+will be chosen over a high heuristic value with a high edge cost.
